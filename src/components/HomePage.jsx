@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ChevronRight, Award, Users, Leaf, Target, Sparkles, ArrowRight } from 'lucide-react';
 import terrace from '../assets/terrace.mp4'; 
 import living from "../assets/living.mp4";
-import kitchen from "../assets/kitchen.mp4"
+import kitchen from "../assets/kitchen.mp4";
+import img from '../assets/img.png'; 
 const Home = () => {
   const [scrollY, setScrollY] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -76,6 +77,7 @@ const Home = () => {
         loop
         muted
         playsInline
+        poster={img}
         className="absolute top-0 left-0 w-full h-full object-cover"
       >
         <source src={terrace} type="video/mp4" />
