@@ -85,34 +85,11 @@ const Home = () => {
         {/* Enhanced Animated Background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 opacity-10">
-            <div 
-              className="absolute top-0 left-0 w-96 h-96 bg-amber-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"
-              style={{ transform: `translate(${mousePos.x * 0.02}px, ${mousePos.y * 0.02}px)` }}
-            ></div>
-            <div 
-              className="absolute top-0 right-0 w-96 h-96 bg-orange-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"
-              style={{ animationDelay: '700ms', transform: `translate(${-mousePos.x * 0.015}px, ${mousePos.y * 0.015}px)` }}
-            ></div>
-            <div 
-              className="absolute bottom-0 left-1/2 w-96 h-96 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"
-              style={{ animationDelay: '1000ms', transform: `translate(${mousePos.x * 0.01}px, ${-mousePos.y * 0.01}px)` }}
-            ></div>
+            
+          
+           
           </div>
-          {/* Floating particles */}
-          {/* <div className="absolute inset-0 opacity-40">
-            {[...Array(20)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-2 h-2 bg-amber-400 rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animation: `float ${5 + Math.random() * 10}s ease-in-out infinite`,
-                  animationDelay: `${Math.random() * 5}s`
-                }}
-              ></div>
-            ))}
-          </div> */}
+        
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -123,10 +100,7 @@ const Home = () => {
               transform: `translateY(${scrollY * 0.3}px) scale(${Math.max(0.95, 1 - scrollY / 2000)})`
             }}
           >
-            {/* <div className="inline-flex items-center gap-2 mb-6 px-6 py-3 bg-amber-500/20 backdrop-blur-md rounded-full border border-amber-400/30 shadow-lg hover:scale-105 transition-transform duration-300">
-              <Award className="w-5 h-5 text-amber-400 animate-pulse" />
-              <span className="text-white font-semibold">Established 2015 • Excellence in Design</span>
-            </div> */}
+           
             
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
               <span className="block animate-fade-in text-white ">Malhotra</span>
@@ -139,9 +113,7 @@ const Home = () => {
               A design-based firm specializing in <span className="text-white font-semibold">Interior Design</span>, <span className="text-white font-semibold">Architecture</span>, and <span className="text-white font-semibold">Furniture Design</span>
             </p>
             
-            {/* <p className="text-base md:text-lg text-gray-100 mb-10 max-w-2xl mx-auto animate-fade-in-up" style={{ animationDelay: '400ms' }}>
-              Creating extraordinary spaces that exceed expectations through innovative, functional & sustainable design
-            </p> */}
+         
             
             <div className="flex flex-wrap gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '600ms' }}>
               <button className="group px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl font-semibold text-lg shadow-2xl hover:shadow-amber-500/50 transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
@@ -158,12 +130,7 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Enhanced Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2 hover:border-amber-400 transition-colors duration-300">
-            <div className="w-1 h-3 bg-gradient-to-b from-white/50 to-amber-400/50 rounded-full animate-pulse"></div>
-          </div>
-        </div>
+     
 
         {/* Wave Bottom */}
         <div className="absolute bottom-0 left-0 right-0">
