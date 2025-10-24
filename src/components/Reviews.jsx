@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Star, Quote, ThumbsUp, Award, TrendingUp, Users, CheckCircle, Sparkles, ChevronLeft, ChevronRight, Mail, Building2,MessageSquare } from 'lucide-react';
+import { Star, Quote, ThumbsUp, Award, TrendingUp, Users, CheckCircle, Sparkles, ChevronLeft, ChevronRight, Mail, Building2, MessageSquare } from 'lucide-react';
 
 const Reviews = () => {
   const [scrollY, setScrollY] = useState(0);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [filter, setFilter] = useState('all');
+  const [rating, setRating] = useState(0);
+  const [hoveredRating, setHoveredRating] = useState(0);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    projectType: '',
+    review: '',
+    consent: false
+  });
+  const [submitStatus, setSubmitStatus] = useState('');
+  const [userReviews, setUserReviews] = useState([]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -109,6 +120,73 @@ const Reviews = () => {
 
   const prevTestimonial = () => {
     setCurrentTestimonial((prev) => (prev - 1 + filteredTestimonials.length) % filteredTestimonials.length);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!formData.name || !formData.email || !formData.projectType || !formData.review) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus(''), 3000);
+      return;
+    }
+
+    if (rating === 0) {
+      setSubmitStatus('error-rating');
+      setTimeout(() => setSubmitStatus(''), 3000);
+      return;
+    }
+
+    if (!formData.consent) {
+      setSubmitStatus('error-consent');
+      setTimeout(() => setSubmitStatus(''), 3000);
+      return;
+    }
+
+    // Create new review object
+    const newReview = {
+      name: formData.name,
+      role: 'Client',
+      project: formData.projectType.charAt(0).toUpperCase() + formData.projectType.slice(1) + ' Project',
+      rating: rating,
+      image: '👤',
+      text: formData.review,
+      category: formData.projectType,
+      timestamp: new Date().toISOString()
+    };
+
+    // Add to user reviews
+    setUserReviews(prev => [newReview, ...prev]);
+    
+    // Show success message
+    setSubmitStatus('success');
+    
+    // Reset form after success
+    setTimeout(() => {
+      setFormData({
+        name: '',
+        email: '',
+        projectType: '',
+        review: '',
+        consent: false
+      });
+      setRating(0);
+      setSubmitStatus('');
+      
+      // Scroll to reviews section
+      const reviewsSection = document.getElementById('all-reviews-section');
+      if (reviewsSection) {
+        reviewsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 2000);
   };
 
   return (
@@ -300,7 +378,32 @@ const Reviews = () => {
             </div>
 
             <div className="bg-white rounded-2xl p-8 md:p-12 shadow-2xl border-2 border-gray-100 animate-scaleIn">
-              <div className="space-y-6">
+              {submitStatus === 'success' && (
+                <div className="mb-6 p-4 bg-green-50 border-2 border-green-500 rounded-xl flex items-center gap-3 animate-fadeIn">
+                  <CheckCircle className="w-6 h-6 text-green-500" />
+                  <span className="text-green-700 font-semibold">Thank you! Your review has been submitted successfully.</span>
+                </div>
+              )}
+              
+              {submitStatus === 'error' && (
+                <div className="mb-6 p-4 bg-red-50 border-2 border-red-500 rounded-xl text-red-700 font-semibold animate-fadeIn">
+                  Please fill in all required fields.
+                </div>
+              )}
+
+              {submitStatus === 'error-rating' && (
+                <div className="mb-6 p-4 bg-red-50 border-2 border-red-500 rounded-xl text-red-700 font-semibold animate-fadeIn">
+                  Please select a rating.
+                </div>
+              )}
+
+              {submitStatus === 'error-consent' && (
+                <div className="mb-6 p-4 bg-red-50 border-2 border-red-500 rounded-xl text-red-700 font-semibold animate-fadeIn">
+                  Please agree to publish your review.
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="group">
                     <label className="block text-gray-700 font-semibold mb-2 flex items-center gap-2">
@@ -309,6 +412,9 @@ const Reviews = () => {
                     </label>
                     <input
                       type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-amber-500 focus:outline-none transition-all duration-300 group-hover:border-gray-300"
                       placeholder="John Doe"
@@ -322,6 +428,9 @@ const Reviews = () => {
                     </label>
                     <input
                       type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-amber-500 focus:outline-none transition-all duration-300 group-hover:border-gray-300"
                       placeholder="john@example.com"
@@ -336,6 +445,9 @@ const Reviews = () => {
                       Project Type *
                     </label>
                     <select
+                      name="projectType"
+                      value={formData.projectType}
+                      onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-amber-500 focus:outline-none transition-all duration-300 group-hover:border-gray-300"
                     >
@@ -354,13 +466,22 @@ const Reviews = () => {
                       Your Rating *
                     </label>
                     <div className="flex gap-2 pt-2">
-                      {[1, 2, 3, 4, 5].map((rating) => (
+                      {[1, 2, 3, 4, 5].map((star) => (
                         <button
-                          key={rating}
+                          key={star}
                           type="button"
+                          onClick={() => setRating(star)}
+                          onMouseEnter={() => setHoveredRating(star)}
+                          onMouseLeave={() => setHoveredRating(0)}
                           className="group/star p-2 hover:scale-125 transition-transform duration-200"
                         >
-                          <Star className="w-8 h-8 text-gray-300 hover:text-yellow-500 hover:fill-yellow-500 transition-colors" />
+                          <Star 
+                            className={`w-8 h-8 transition-colors ${
+                              star <= (hoveredRating || rating)
+                                ? 'text-yellow-500 fill-yellow-500'
+                                : 'text-gray-300'
+                            }`} 
+                          />
                         </button>
                       ))}
                     </div>
@@ -373,6 +494,9 @@ const Reviews = () => {
                     Your Review *
                   </label>
                   <textarea
+                    name="review"
+                    value={formData.review}
+                    onChange={handleInputChange}
                     required
                     rows="6"
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-amber-500 focus:outline-none transition-all duration-300 group-hover:border-gray-300 resize-none"
@@ -384,6 +508,9 @@ const Reviews = () => {
                   <input
                     type="checkbox"
                     id="consent"
+                    name="consent"
+                    checked={formData.consent}
+                    onChange={handleInputChange}
                     className="mt-1 w-4 h-4 text-amber-500 border-gray-300 rounded focus:ring-amber-500"
                   />
                   <label htmlFor="consent" className="text-sm text-gray-600">
@@ -392,7 +519,7 @@ const Reviews = () => {
                 </div>
 
                 <button
-                  type="button"
+                  type="submit"
                   className="group w-full px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:shadow-amber-500/50 transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
@@ -401,14 +528,14 @@ const Reviews = () => {
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-amber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </button>
-              </div>
+              </form>
             </div>
           </div>
         </div>
       </section>
 
       {/* All Reviews Grid */}
-      <section className="py-16 md:py-24 bg-white">
+      <section id="all-reviews-section" className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
@@ -421,9 +548,49 @@ const Reviews = () => {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* User submitted reviews first */}
+              {userReviews.map((review, idx) => (
+                <div 
+                  key={`user-${idx}`}
+                  className="group bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 shadow-lg hover:shadow-2xl border-2 border-amber-300 hover:border-amber-500 transition-all duration-300 transform hover:-translate-y-2 animate-fadeInUp"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-start gap-4">
+                      <div className="text-4xl">{review.image}</div>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-gray-900 text-lg group-hover:text-amber-600 transition-colors">
+                          {review.name}
+                        </h3>
+                        <p className="text-gray-600 text-sm">{review.role}</p>
+                      </div>
+                    </div>
+                    <span className="inline-block px-3 py-1 bg-amber-500 text-white rounded-full text-xs font-bold shadow-md">
+                      NEW
+                    </span>
+                  </div>
+
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(review.rating)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                    ))}
+                  </div>
+
+                  <p className="text-gray-700 text-sm leading-relaxed mb-4">
+                    {review.text}
+                  </p>
+
+                  <div className="pt-4 border-t border-amber-200">
+                    <span className="inline-block px-3 py-1 bg-white text-amber-700 rounded-full text-xs font-semibold border border-amber-300">
+                      {review.project}
+                    </span>
+                  </div>
+                </div>
+              ))}
+
+              {/* Original testimonials */}
               {testimonials.map((testimonial, idx) => (
                 <div 
-                  key={idx}
+                  key={`original-${idx}`}
                   className={`group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl border-2 border-gray-100 hover:border-amber-400 transition-all duration-300 transform hover:-translate-y-2 animate-fadeInUp delay-${(idx % 3) * 100}`}
                 >
                   <div className="flex items-start gap-4 mb-4">
@@ -512,7 +679,7 @@ const Reviews = () => {
               Let's create your success story together
             </p>
             <button className="group px-10 py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl font-bold text-lg shadow-2xl hover:shadow-amber-500/50 transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
-              <span className="relative z-10 flex items-center gap-2">
+              <span className="relative z-10 flex items-center gap-2 justify-center">
                 Start Your Project
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
               </span>
