@@ -46,37 +46,37 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 
-const allowedOrigins = [
-  process.env.Frontend_url,
-  "http://localhost:5173",
-];
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
-
+// const allowedOrigins = [
+//   process.env.Frontend_url,
+//   "http://localhost:5173",
+// ];
 // app.use(
 //   cors({
-//     origin: process.env.Frontend_url,
-//     methods: ["GET", "POST", "DELETE", "PUT"],
-//     allowedHeaders: [
-//       "Content-Type",
-//       "Authorization",
-//       "Cache-Control",
-//       "Expires",
-//       "Pragma",
-//     ],
+//     origin: (origin, callback) => {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error("Not allowed by CORS"));
+//       }
+//     },
 //     credentials: true,
 //   })
 // );
+
+app.use(
+  cors({
+    origin: process.env.Frontend_url,
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cache-Control",
+      "Expires",
+      "Pragma",
+    ],
+    credentials: true,
+  })
+);
 
 app.use(cookieParser());
 
