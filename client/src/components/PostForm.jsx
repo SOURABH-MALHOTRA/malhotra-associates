@@ -9,7 +9,7 @@ export default function PostForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const API_URL = 'http://localhost:7000/api/posts';
+  const API_URL = import.meta.env.VITE_BACKEND_URL + '/posts';
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];

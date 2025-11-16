@@ -22,7 +22,7 @@ const Reviews = () => {
     successRate: 100
   });
 
-  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:7000/api';
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:7000/api';
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
