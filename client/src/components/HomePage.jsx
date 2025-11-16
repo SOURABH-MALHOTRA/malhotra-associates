@@ -116,16 +116,21 @@ const Home = () => {
          
             
             <div className="flex flex-wrap gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '600ms' }}>
+             <a href="/projects">
               <button className="group px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl font-semibold text-lg shadow-2xl hover:shadow-amber-500/50 transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+             
                 <span className="relative z-10 flex items-center">
                   Explore Our Work
                   <ChevronRight className="inline ml-2 group-hover:translate-x-1 transition-transform" />
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-amber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </button>
+                </a>
+                <a href="tel:+918199999884">
               <button className="px-8 py-4 bg-white/10 backdrop-blur-md text-white rounded-xl font-semibold text-lg border-2 border-white hover:bg-white/20 hover:border-white/50 hover:scale-105 transition-all duration-300">
                 Get Consultation
               </button>
+              </a>
             </div>
           </div>
         </div>
